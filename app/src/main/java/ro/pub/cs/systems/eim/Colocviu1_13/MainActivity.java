@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             if (v.getId() == R.id.navigateButtonId) {
                 Intent secondaryActivityIntent = new Intent(getApplicationContext(), Colocviu1_13SecondaryActivity.class);
                 secondaryActivityIntent.putExtra("instructions", textView.getText().toString());
+
                 startActivityForResult(secondaryActivityIntent, SECONDARY_ACTIVITY);
             }
         }
@@ -74,14 +75,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SECONDARY_ACTIVITY) {
-            Boolean registerStatus = data.getBooleanExtra("registerStatus", false);
-            Boolean cancelStatus = data.getBooleanExtra("cancelStatus", false);
-            Toast.makeText(this, "The activity returned with result " + resultCode, Toast.LENGTH_LONG).show();
-            if (registerStatus)
-                Toast.makeText(this, "Register button was pressed", Toast.LENGTH_LONG).show();
-            if (cancelStatus)
-                Toast.makeText(this, "Cancel button was pressed", Toast.LENGTH_LONG).show();
+        if (resultCode == SECONDARY_ACTIVITY) {
+                Boolean registerStatus = data.getBooleanExtra("registerStatus", false);
+                Boolean cancelStatus = data.getBooleanExtra("cancelStatus", false);
+
+                Toast.makeText(this, "The activity returned with result " + resultCode, Toast.LENGTH_LONG).show();
+                if (registerStatus)
+                    Toast.makeText(this, "Register button was pressed", Toast.LENGTH_LONG).show();
+                if (cancelStatus)
+                    Toast.makeText(this, "Cancel button was pressed", Toast.LENGTH_LONG).show();
         }
     }
 

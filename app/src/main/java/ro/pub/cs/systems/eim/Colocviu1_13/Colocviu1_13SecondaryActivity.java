@@ -18,7 +18,7 @@ public class Colocviu1_13SecondaryActivity extends AppCompatActivity {
     boolean isRegisterPressed = false;
     boolean isCancelPressed = true;
 
-    Intent resultIntent = new Intent();
+    Intent resultIntent;
 
     private class ButtonClickListener implements View.OnClickListener {
 
@@ -52,6 +52,7 @@ public class Colocviu1_13SecondaryActivity extends AppCompatActivity {
             instrTextView.setText(instructions);
         }
 
+        resultIntent = new Intent();
     }
 
     @Override
@@ -60,7 +61,8 @@ public class Colocviu1_13SecondaryActivity extends AppCompatActivity {
 
         resultIntent.putExtra("registerStatus", isRegisterPressed);
         resultIntent.putExtra("cancelStatus", isCancelPressed);
-        setResult(RESULT_OK, resultIntent);
+
+        setResult(10, resultIntent);
         finish();
     }
 }
