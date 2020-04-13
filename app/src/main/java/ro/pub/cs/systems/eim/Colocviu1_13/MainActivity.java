@@ -1,15 +1,16 @@
 package ro.pub.cs.systems.eim.Colocviu1_13;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     private Integer eastButtonCount;
     private Button westButton;
     private Integer westButtonCount;
+    private Button navigateButton;
+
+    public static final int SECONDARY_ACTIVITY = 10;
 
     private class ButtonClickListener implements View.OnClickListener {
 
@@ -47,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
                 westButtonCount++;
             }
+            if (v.getId() == R.id.navigateButtonId) {
+                Intent secondaryActivityIntent = new Intent(getApplicationContext(), Colocviu1_13SecondaryActivity.class);
+                secondaryActivityIntent.putExtra("instructions", textView.getText().toString());
+                startActivityForResult(secondaryActivityIntent, SECONDARY_ACTIVITY);
+            }
         }
     }
 
@@ -63,6 +72,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SECONDARY_ACTIVITY) {
+            Boolean registerStatus = data.getBooleanExtra("registerStatus", false);
+            Boolean cancelStatus = data.getBooleanExtra("cancelStatus", false);
+            Toast.makeText(this, "The activity returned with result " + resultCode, Toast.LENGTH_LONG).show();
+            if (registerStatus)
+                Toast.makeText(this, "Register button was pressed", Toast.LENGTH_LONG).show();
+            if (cancelStatus)
+                Toast.makeText(this, "Cancel button was pressed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -72,11 +95,13 @@ public class MainActivity extends AppCompatActivity {
         southButton = findViewById(R.id.southButtonId);
         eastButton = findViewById(R.id.eastButtonId);
         westButton = findViewById(R.id.westButtonId);
+        navigateButton = findViewById(R.id.navigateButtonId);
 
         northButton.setOnClickListener(buttonClickListener);
         southButton.setOnClickListener(buttonClickListener);
         eastButton.setOnClickListener(buttonClickListener);
         westButton.setOnClickListener(buttonClickListener);
+        navigateButton.setOnClickListener(buttonClickListener);
 
         northButtonCount = 0;
         southButtonCount = 0;
